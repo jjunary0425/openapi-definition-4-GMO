@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: 資産残高 API
+  version: 1.0.0
+paths:
+  /private/v1/account/assets:
+    get:
+      summary: 資産残高を取得する
+      parameters:
+        - in: header
+          name: API-KEY
+          schema:
+            type: string
+        - in: header
+          name: API-TIMESTAMP
+          schema:
+            type: string
+        - in: header
+          name: API-SIGN
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+components:
+  schemas:
+    Asset:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The total amount
+        available:
+          type: string
+          description: The available amount
+        conversionRate:
+          type: string
+          description: The conversion rate
+        symbol:
+          type: string
+          description: The symbol representing the asset
+      required:
+        - amount
+        - available
+        - conversionRate
+        - symbol
+
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: The status code (0 indicates success)
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Asset'
+          description: The array of assets
+        responsetime:
+          type: string
+          format: date-time
+          description: The timestamp of the response
+      required:
+        - status
+        - data
+        - responsetime
+
